@@ -1,0 +1,8 @@
+target/
+*.log
+otp-codes.txt
+src/main/resources/email.properties
+src/main/resources/sms.properties
+src/main/resources/telegram.properties
+.idea/
+*.iml

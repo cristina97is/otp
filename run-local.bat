@@ -1,0 +1,6 @@
+@echo off
+echo Starting PostgreSQL 17 in Docker...
+docker compose up -d
+echo Starting OTP Service...
+mvn spring-boot:run
+pause

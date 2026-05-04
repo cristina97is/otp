@@ -1,0 +1,4 @@
+package com.promoit.otp.controller;
+import com.promoit.otp.model.*;import com.promoit.otp.service.AdminService;import org.springframework.web.bind.annotation.*;import java.util.*;
+@RestController@RequestMapping("/api/admin")
+public class AdminController{private final AdminService admin;public AdminController(AdminService admin){this.admin=admin;}@GetMapping("/otp-config")public OtpConfig config(){return admin.getConfig();}@PutMapping("/otp-config")public MessageResponse update(@RequestBody OtpConfigRequest r){admin.updateConfig(r.codeLength(),r.ttlSeconds());return new MessageResponse("config updated");}@GetMapping("/users")public List<User> users(){return admin.nonAdmins();}@DeleteMapping("/users/{id}")public MessageResponse delete(@PathVariable long id){admin.deleteUser(id);return new MessageResponse("user deleted with otp codes");}}

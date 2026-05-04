@@ -1,0 +1,38 @@
+services:
+  postgres:
+    image: postgres:17
+    container_name: otp-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: otp_service
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5433:5432"
+    volumes:
+      - otp_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d otp_service"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build: .
+    container_name: otp-service-app
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/otp_service
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      APP_JWT_SECRET: local-dev-super-secret-change-before-prod
+    ports:
+      - "8081:8080"
+    volumes:
+      - ./otp-codes.txt:/app/otp-codes.txt
+
+volumes:
+  otp_postgres_data:
