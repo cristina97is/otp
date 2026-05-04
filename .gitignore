@@ -6,3 +6,4 @@ src/main/resources/sms.properties
 src/main/resources/telegram.properties
 .idea/
 *.iml
+.DS_Store
